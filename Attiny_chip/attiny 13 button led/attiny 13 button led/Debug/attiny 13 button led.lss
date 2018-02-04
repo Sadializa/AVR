@@ -1,0 +1,86 @@
+
+attiny 13 button led.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         00000036  00000000  00000000  00000054  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .data         00000000  00800060  00800060  0000008a  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  2 .comment      00000030  00000000  00000000  0000008a  2**0
+                  CONTENTS, READONLY
+  3 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  000000bc  2**2
+                  CONTENTS, READONLY
+  4 .debug_aranges 00000020  00000000  00000000  000000f8  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  5 .debug_info   0000033f  00000000  00000000  00000118  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_abbrev 000002e7  00000000  00000000  00000457  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_line   00000165  00000000  00000000  0000073e  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_frame  00000024  00000000  00000000  000008a4  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_str    0000024d  00000000  00000000  000008c8  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_ranges 00000010  00000000  00000000  00000b15  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	09 c0       	rjmp	.+18     	; 0x14 <__ctors_end>
+   2:	0e c0       	rjmp	.+28     	; 0x20 <__bad_interrupt>
+   4:	0d c0       	rjmp	.+26     	; 0x20 <__bad_interrupt>
+   6:	0c c0       	rjmp	.+24     	; 0x20 <__bad_interrupt>
+   8:	0b c0       	rjmp	.+22     	; 0x20 <__bad_interrupt>
+   a:	0a c0       	rjmp	.+20     	; 0x20 <__bad_interrupt>
+   c:	09 c0       	rjmp	.+18     	; 0x20 <__bad_interrupt>
+   e:	08 c0       	rjmp	.+16     	; 0x20 <__bad_interrupt>
+  10:	07 c0       	rjmp	.+14     	; 0x20 <__bad_interrupt>
+  12:	06 c0       	rjmp	.+12     	; 0x20 <__bad_interrupt>
+
+00000014 <__ctors_end>:
+  14:	11 24       	eor	r1, r1
+  16:	1f be       	out	0x3f, r1	; 63
+  18:	cf e9       	ldi	r28, 0x9F	; 159
+  1a:	cd bf       	out	0x3d, r28	; 61
+  1c:	02 d0       	rcall	.+4      	; 0x22 <main>
+  1e:	09 c0       	rjmp	.+18     	; 0x32 <_exit>
+
+00000020 <__bad_interrupt>:
+  20:	ef cf       	rjmp	.-34     	; 0x0 <__vectors>
+
+00000022 <main>:
+int main(void)
+{
+	
+
+	// Set up Port B pin 4 mode to output
+	DDRB =  0b00010000;
+  22:	80 e1       	ldi	r24, 0x10	; 16
+  24:	87 bb       	out	0x17, r24	; 23
+	//DDRB |= 0<<PB3;
+
+	while (1) {
+		// Toggle Port B pin 4 output state
+
+		if((PINB & (1<<PB3)))
+  26:	b3 9b       	sbis	0x16, 3	; 22
+  28:	02 c0       	rjmp	.+4      	; 0x2e <main+0xc>
+		{
+			PORTB = (1<<PB4);
+  2a:	88 bb       	out	0x18, r24	; 24
+  2c:	fc cf       	rjmp	.-8      	; 0x26 <main+0x4>
+		}
+		else
+		{
+			PORTB = (0<<PB4);
+  2e:	18 ba       	out	0x18, r1	; 24
+  30:	fa cf       	rjmp	.-12     	; 0x26 <main+0x4>
+
+00000032 <_exit>:
+  32:	f8 94       	cli
+
+00000034 <__stop_program>:
+  34:	ff cf       	rjmp	.-2      	; 0x34 <__stop_program>
