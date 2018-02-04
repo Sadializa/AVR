@@ -1,10 +1,3 @@
-/*
- * 7447 counter.c
- *
- * Created: 23-Oct-17 9:44:01 PM
- * Author : ishrak
- */ 
-
 #ifndef F_CPU
 #define F_CPU 16000000UL // 16 MHz clock speed
 #endif
